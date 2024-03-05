@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <time.h>
 
 #include "qsort.h"
 
@@ -48,24 +47,41 @@ void list_free(node_t **list)
     }
 }
 
-// swap the random value with head
-void swap_random_pivot(node_t **list) {
-    if (!list)
+// swap the median (among head, center, tail) with head
+void medianThree(node_t **list, int len) {
+    if (len < 3)
         return;
     
-    int len = list_length(list);
-    srand(time(NULL));
-    int r = rand() % len;
+    node_t **tmp = list;
 
-    node_t **rand_node = list;
-    while (r > 1) {
-        rand_node = &(*rand_node)->next;
-        r--;
+    node_t *head = *list;
+
+    // center point
+    int i = (len - 1) / 2 - 1;
+    while (i--) {
+        tmp = &(*tmp)->next;
+    }
+    node_t *center = (*tmp)->next;
+
+    // tail
+    // node_t 
+    while ((*tmp)->next) {
+        tmp = &(*tmp)->next;
+    }
+    node_t *tail = *tmp;
+
+    // find median and swap
+    long h = head->value, c = center->value, t = tail->value;
+
+    if ((h > c) ^ (h > t)) 
+        return;
+    else if ((c > h) ^ (c > t)) {
+        // swap center to head
+        node_t **tmp = &center;
+
     }
 
-    node_t *tmp = (*rand_node)->next;
-    (*rand_node)->next = tmp->next;
-    list_add(list, tmp);
+    // printf("%ld %ld %ld\n", head->value, center->value, tail->value);
 }
 
 /* Original implementation: https://alienryderflex.com/quicksort/ */
@@ -84,7 +100,6 @@ void quick_sort(node_t **list, int *max_time)
     while (i >= 0) {
         node_t *L = begin[i], *R = end[i];
         if (L != R) {
-            swap_random_pivot(&L);
             node_t *pivot = L;
             value = pivot->value;
             node_t *p = pivot->next;

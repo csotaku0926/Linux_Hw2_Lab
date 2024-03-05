@@ -1,6 +1,8 @@
 #ifndef LAB1_QSORT_H
 #define LAB1_QSORT_H 
 
+#define MAX(a,b) (a>b?a:b)
+
 /* 
     The original implementation: https://hackmd.io/@sysprog/linux2024-quiz1
 */
@@ -22,6 +24,8 @@ node_t *list_construct(node_t *list, int n);
 
 void list_free(node_t **list);
 
-void quick_sort(node_t **list);
+void swap_random_pivot(node_t **list); 
+
+void quick_sort(node_t **list, int *max_time);
 
 #endif
