@@ -9,3 +9,6 @@ check: $(CFILES)
 
 check_list: $(CLIST_FILES)
 	$(CC) $^ -o $@ $(CFLAGS)
+
+clean:
+	rm check check_list
