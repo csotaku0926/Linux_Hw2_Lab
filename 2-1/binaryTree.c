@@ -18,7 +18,7 @@ static int find(int num, int size, const struct hlist_head *heads)
 {
     struct hlist_node *p;
     int hash = (num < 0 ? -num : num) % size;
-    hlist_for_each (p, heads) {
+    hlist_for_each (p, &heads[hash]) {
         struct order_node *on = container_of(p, struct order_node, node);
         if (num == on->val)
             return on->idx;
@@ -57,10 +57,10 @@ static inline void node_add(int val,
     on->val = val;
     on->idx = idx;
     int hash = (val < 0 ? -val : val) % size;
-    hlist_add_head(&on->node, heads);
+    hlist_add_head(&on->node, &heads[hash]);
 }
 
-static struct TreeNode *buildTree(int *preorder,
+struct TreeNode *buildTree(int *preorder,
                                   int preorderSize,
                                   int *inorder,
                                   int inorderSize)
@@ -75,7 +75,3 @@ static struct TreeNode *buildTree(int *preorder,
                in_heads, inorderSize);
 }
 
-int main(void)
-{
-
-}
