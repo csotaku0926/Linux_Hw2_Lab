@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 #define container_of(ptr, type, member) \
     ((type *) ((char *) (ptr) - (size_t) & (((type *) 0)->member)))
@@ -27,6 +28,15 @@
 
 #define list_for_each_safe(p, n, head) \
     for (p = (head)->next, n = p->next; p != (head); p = n, n = p->next)
+
+/* Linux kernel style hash function */
+// https://github.com/torvalds/linux/blob/master/tools/include/linux/hash.h
+#define GOLDEN_RATIO_32 0x61C88647
+
+unsigned int hash_32(unsigned int key, unsigned int bits)
+{
+    return (key * GOLDEN_RATIO_32) >> (32 - bits);
+}
 
 struct hlist_node;
 

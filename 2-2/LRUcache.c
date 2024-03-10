@@ -72,15 +72,23 @@ void lRUCachePut(LRUCache *obj, int key, int value)
 
 int main(void)
 {
-    LRUCache *lru_cache = lRUCacheCreate(2);
+    int capacity = 11;
+    LRUCache *lru_cache = lRUCacheCreate(capacity);
+    srand(time(NULL));
+
+    clock_t start, end;
+
+    start = clock();
     
-    lRUCachePut(lru_cache, 1, 111);
-    lRUCachePut(lru_cache, 2, 222);
-    int ret1 = lRUCacheGet(lru_cache, 1); // 1
-    lRUCachePut(lru_cache, 3, 333);
-    int ret2 = lRUCacheGet(lru_cache, 2); // -1
+    for (int i=0; i<100; i++)
+        lRUCachePut(lru_cache, rand(), 111);
+    
+    for (int i=0; i<10; i++)
+        lRUCacheGet(lru_cache, rand()); 
+    
+    end = clock();
 
-    printf("%d %d\n", ret1, ret2);
-
+    printf("elapsed time: %f\n", (double)(end - start) / CLOCKS_PER_SEC);
+    
     lRUCacheFree(lru_cache);
 }
